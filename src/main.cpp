@@ -4,9 +4,10 @@
 #include <Arduino.h>
 #include "initIO.h"
 #include "modBusHandler.h"
+#include "regDef.h"
 
 
-HardwareSerial Serial3(PB11, PB10);
+
 void setup() {
     initIO();
     setupModbus();
@@ -16,6 +17,8 @@ void setup() {
 
 void loop() {
     mbPoll();
+    runTasks();
+    clearControl();
 }
 
 
