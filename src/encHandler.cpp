@@ -41,20 +41,31 @@ void encTask(){
 inline float getRpm() {
     static float lastPos = 0.0f;
     static uint32_t lastTimeUs = 0;
+    static float lastRpm = 0.0f;
 
     uint32_t nowUs = micros();
-    float curPos = encA.getPos();   // turns
+    float curPos = encA.getPos();
 
     uint32_t dtUs = nowUs - lastTimeUs;
-    if (dtUs < 10000) {             // <10ms → too noisy
-        return 0.0f;
-    }
-
     float dTurns = curPos - lastPos;
 
+    // Always update state for next call
     lastPos = curPos;
     lastTimeUs = nowUs;
 
+    // If loop runs too fast, keep last RPM
+    if (dtUs < 5000) {              // 5ms = safe for high loop rates
+        return lastRpm;
+    }
+
+    // If spindle stopped (no movement)
+    if (dTurns == 0.0f) {
+        lastRpm = 0.0f;
+        return 0.0f;
+    }
+
     // RPM = turns/sec * 60
-    return (dTurns * 60.0f * 1000000.0f) / dtUs;
+    lastRpm = (dTurns * 60.0f * 1000000.0f) / dtUs;
+    return lastRpm;
 }
+
