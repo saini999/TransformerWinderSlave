@@ -33,7 +33,28 @@ void encTask(){
         data.resetEnc = false;
     }
     data.curTurns = getEncAPos();
+    data.rpm = getRpm();
     if(data.updateParams){
         setEncARes((float)data.encRes);
     }
+}
+inline float getRpm() {
+    static float lastPos = 0.0f;
+    static uint32_t lastTimeUs = 0;
+
+    uint32_t nowUs = micros();
+    float curPos = encA.getPos();   // turns
+
+    uint32_t dtUs = nowUs - lastTimeUs;
+    if (dtUs < 10000) {             // <10ms → too noisy
+        return 0.0f;
+    }
+
+    float dTurns = curPos - lastPos;
+
+    lastPos = curPos;
+    lastTimeUs = nowUs;
+
+    // RPM = turns/sec * 60
+    return (dTurns * 60.0f * 1000000.0f) / dtUs;
 }

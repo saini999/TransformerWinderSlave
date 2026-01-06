@@ -1,4 +1,9 @@
 #include "spindleHandler.h"
+
+bool brakeState = true, tmUpdate = false, spdlDir = false;
+uint32_t oldTm;
+uint8_t oldspd;
+
 void initSpindle(){
     pinMode(PINS::SPDL_PWM, OUTPUT);
     pinMode(PINS::SPDL_DIR, OUTPUT);
@@ -6,22 +11,27 @@ void initSpindle(){
 }
 
 void setSpindleSpeed(uint8_t speed){
-    analogWrite(PINS::SPDL_PWM, speed);
+    if(oldspd != speed){
+        oldspd = speed;
+        apin(PINS::SPDL_PWM, speed);
+    }
 }
 
 void setSpindleDirection(bool dir){
-    digitalWrite(PINS::SPDL_DIR, dir ? HIGH : LOW);
+    if(dir != spdlDir){
+        spdlDir = dir;
+        pin(PINS::SPDL_DIR, dir);
+    }
 }
 
-bool brakeState = true, tmUpdate = false;
-uint32_t oldTm;
+
 void applyBrake(){
     brakeState = true;
-    digitalWrite(PINS::SPDL_BRK, HIGH);
+    pin(PINS::SPDL_BRK, true);
 }
 
 bool stopBrake() {
-    digitalWrite(PINS::SPDL_BRK, LOW);
+    pin(PINS::SPDL_BRK, false);
     if(!tmUpdate) {
         oldTm = millis();
         tmUpdate = true;

@@ -46,9 +46,13 @@ void stepperTask(){
         if(oldCurPos != curPos){
             data.curYPos = getCurPos(curPos);
             oldCurPos = curPos;
+            if(curPos != 0 && !data.atZero){data.atZero = true;}
         }
         stepper.runSpeed();
     }
+    if(stepper.distanceToGo() == 0){
+        data.stepDone = true;
+    } else { data.stepDone = false; }
     if(data.zeroStep){
         data.setYPos = 0;
         data.curYPos = 0;
@@ -56,5 +60,8 @@ void stepperTask(){
         stepper.moveTo(0);
         oldSetPos = 0;
         oldCurPos = 0;
+    }
+    if(data.updateParams){
+        CalculateStepsPerMM();
     }
 }

@@ -5,9 +5,9 @@
 #include "initIO.h"
 #include "RegDef.h"
 
-extern bool brakeState, tmUpdate;
+extern bool brakeState, tmUpdate, spdlDir;
 extern uint32_t oldTm;
-
+extern uint8_t oldspd;
 void initSpindle();
 
 void setSpindleSpeed(uint8_t speed);

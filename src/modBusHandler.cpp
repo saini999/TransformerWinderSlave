@@ -104,3 +104,19 @@ void sendDataToRegisters(){
     setFloat(RegNum::CUR_YPOS, data.curYPos);
     setFloat(RegNum::RPM, data.rpm);
 }
+
+
+void clearControl() {
+    if(data.zeroStep){
+        setBit(RegNum::CONTROL, ControlReg::ZEROSTEP, false);
+        data.zeroStep = false;
+    }
+    if(data.resetEnc){
+        setBit(RegNum::CONTROL, ControlReg::RESETENC, false);
+        data.resetEnc = false;
+    }
+    if(data.updateParams){
+        setBit(RegNum::CONTROL, ControlReg::UPDATE_PARAMS, false);
+        data.updateParams = false;
+    }
+}

@@ -27,4 +27,6 @@ void sendDataToRegisters();
 
 void updateData();
 
+void clearControl();
+
 #endif

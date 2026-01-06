@@ -26,12 +26,8 @@ void apin(int pin){
 
 
 void runTasks(){
+    pin(PINS::SYNC_LED, data.sync);
     encTask();
     spindleTask();
     stepperTask();
-}
-
-
-void clearControl(){
-    
 }

@@ -29,7 +29,4 @@ void apin(int pin);
 
 void runTasks();
 
-
-void clearControl();
-
 #endif

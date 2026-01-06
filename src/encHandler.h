@@ -8,6 +8,7 @@
 #include "Encoder.h"
 
 inline void encUpdate();
+inline float getRpm();
 
 void initEnc();
 
