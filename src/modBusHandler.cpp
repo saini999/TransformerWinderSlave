@@ -87,7 +87,7 @@ void fetchDataFromRegisters(){
     data.speed = (uint8_t) mb.Hreg(RegNum::SPEED);
     data.power = (uint8_t) mb.Hreg(RegNum::POWER);
     data.encRes = mb.Hreg(RegNum::ENC_RES);
-    data.stepRes = getFloat(RegNum::STEP_RES);
+    data.stepRes = mb.Hreg(RegNum::STEP_RES);
     data.screwPitch = getFloat(RegNum::SCREW_PITCH);
     data.gearRatio = getFloat(RegNum::GEAR_RATIO);
 }

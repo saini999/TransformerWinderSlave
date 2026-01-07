@@ -4,8 +4,8 @@ AccelStepper stepper(AccelStepper::DRIVER, PINS::STEP_PULSE_PIN, PINS::STEP_DIR_
 
 uint32_t stepPerMM;
 
-float oldSetPos = NAN;
-int32_t oldCurPos = INT32_MIN;
+float oldSetPos = 0;
+int32_t oldCurPos = 0;
 bool isInverted = false;
 
 void initStepper(){
@@ -13,7 +13,9 @@ void initStepper(){
     pinMode(PINS::STEP_DIR_PIN, OUTPUT);
     stepper.setCurrentPosition(0);
     stepper.setMaxSpeed(10000.0f);
-    stepper.setSpeed(5000.0f);  
+    stepper.setSpeed(5000.0f);
+    stepper.setAcceleration(5000.0f);
+      
 }
 
 void CalculateStepsPerMM(){
@@ -48,7 +50,7 @@ void stepperTask(){
             oldCurPos = curPos;
             if(curPos != 0 && !data.atZero){data.atZero = true;}
         }
-        stepper.runSpeed();
+        stepper.run();
     }
     if(stepper.distanceToGo() == 0){
         data.stepDone = true;
